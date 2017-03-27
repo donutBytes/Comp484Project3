@@ -21,7 +21,7 @@
 			</div>
 		</div>
 		<br>
-		<form>
+		<form action="/loginController.php" method="get">
 			<div class="form-group" align="center" >
 				<label for="inputUsername" class="font-weight-bold">Email address</label>
 				<div class="row">
