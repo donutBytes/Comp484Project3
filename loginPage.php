@@ -13,7 +13,7 @@
 
 	<div class="container-fluid">
 		<div class="text-center bg-inverse" style="padding: 10px">
-			<div class="row">	
+			<div class="row">
 				<a href="homePage.php" style="align-right" class="col-2">Home</a>
 				<div class="col-8">
 					<h1 style="color:white">Welcome to BaristaVille</h1>
@@ -27,7 +27,7 @@
 				<label for="inputUsername" class="font-weight-bold">Username</label>
 				<div class="row">
 					<div class="col-md-4 offset-md-4">
-						<input type="text" class="form-control" id="inputUsername" aria-describedby="usernameHelp" placeholder="Enter Username" required="true">
+						<input type="text" class="form-control" name="inputUsername" id="inputUsername" aria-describedby="usernameHelp" placeholder="Enter Username" required="true">
 					</div>
 				</div>
 				<small id="usernameHelp" class="form-text text-muted">Enter your capitalist username so you can work you vanilla job.</small>
@@ -36,17 +36,15 @@
 				<label for="inputPassword" class="font-weight-bold">Password</label>
 				<div class="row">
 					<div class="col-md-4 offset-md-4">
-						<input type="password" class="form-control" id="inputPassword" placeholder="Password" required="true">
+						<input type="password" class="form-control" name="inputPassword" id="inputPassword" placeholder="Password" required="true">
 					</div>
 				</div>
 				<small id="passwordNote" class="form-text text-muted">Make sure your password is the same as your Username.</small>
 			</div>
 			<div class="form-group" align="center">
-				<a class="nav-link" href="Inbox.html#" style="color:black">
-					<button class="btn btn-primary font-weight-bold">
-						Sign In
-					</button> 
-				</a>
+				<button class="btn btn-primary font-weight-bold" type="submit">
+					Sign In
+				</button>
 			</div>
 		</form>
 	</div>
