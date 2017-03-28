@@ -3,24 +3,32 @@
 <head>
 	<title>Login Page</title>
 
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
-	<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+		<script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
 
 </head>
 <body>
 
-	<div class="container-fluid">
+	<div class="container-fill">
 		<div class="text-center bg-inverse" style="padding: 10px">
 			<div class="row">
-				<a href="homePage.php" style="align-right" class="col-2">Home</a>
-				<div class="col-8">
-					<h1 style="color:white">Welcome to BaristaVille</h1>
+				<div class="col-2">
+					<h2 style="color:white">BaristaVille</h1>
 				</div>
-				<a href="#" class="col-2">Login</a>
+				<div class="col-1">
+					<a href="homePage.php" >
+						<h6 style="color:white">Home</h1>
+					</a>
+				</div>				
+				<div class="col-8"></div>
+				<div class="col-1">
+					<a href="loginPage.php" style="align-right">
+						<h6 style="color:white">Login</h1>
+					</a>
+				</div>				
 			</div>
 		</div>
+	</div>
 		<br>
 		<form action="loginController.php" method="post">
 			<div class="form-group" align="center" >
@@ -42,12 +50,35 @@
 				<small id="passwordNote" class="form-text text-muted">Make sure your password is the same as your Username.</small>
 			</div>
 			<div class="form-group" align="center">
-				<button class="btn btn-primary font-weight-bold" type="submit">
+				<button class="btn btn-primary font-weight-bold" type="submit" id="submit">
 					Sign In
 				</button>
 			</div>
 		</form>
+		<div id="loginFail"></div>
 	</div>
 
+<!-- 	<script type="text/javascript">
+		$(document).ready(function() {
+			$('#submit').click(function() {
+				$.ajax({
+					type: 'POST',
+					url: "loginController.php",
+					success: function(data) {
+						console.log('hi');
+						if(data) {
+							window.location.href = data;
+						} else {
+							// $('#loginFail').html('<h4>Username or Password not Valid</h4>');
+						}
+					},
+					failure: function() {
+						console.log('didnt make it');
+					}
+				});
+			});
+		});
+	</script>
+ -->
 </body>
 </html>

@@ -1,5 +1,4 @@
 <?php 
-session_start();
 
 require_once('db_connect.php');
 
@@ -10,33 +9,22 @@ $login = $db->prepare('
 	WHERE username = ? AND password = ?
 	');
 
-var_dump($login->execute([$_POST['inputUsername'], $_POST['inputPassword']]));
+$login->execute([$_POST['inputUsername'], $_POST['inputPassword']]);
+$results = $login->fetch();
+// var_dump($results);
 
-if($login->execute([$_POST['inputUsername'], $_POST['inputPassword']]))
+if(sizeof($results) > 0)
 {
-	$credentials = $login->fetchAll();
-	$_SESSION['role'] = $credentials[0]['role'];
-	header('');
+	var_dump($results);
+	session_start();
+	$_SESSION['role'] = $results['role'];
+	header('Location: ' . $results['role'] . 'HomePage.php'); 
+	exit();
 }
 else 
 {
-	echo 'Username not valid';
+	header('Location: loginPage.php');
+	exit();
 }
-
-// if( $_POST['inputUsername'] && $_POST['inputPassword'])
-// {
-// 	echo 'made it';
-// 	echo "Welcome: ". $_POST['inputUsername']. "<br />";
-// 	echo "Your password is: ". $_POST["inputPassword"]. "<br />";
-// } 
-// else {
-// 	echo 'didnt make it';
-// }
-
-
-// $stmt = $db->prepare('SELECT * FROM orders');
-// $stmt->execute();
-// $bullshit = $stmt->fetchAll();
-// var_dump($bullshit);
 	
 ?>

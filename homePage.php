@@ -11,16 +11,32 @@
 </head>
 <body>
 
-	<div class="container-fluid">
+	<div class="container-fill">
 		<div class="text-center bg-inverse" style="padding: 10px">
 			<div class="row">
-				<a href="homePage.php" style="align-right" class="col-2">Home</a>
-				<div class="col-8">
-					<h1 style="color:white">Welcome to BaristaVille</h1>
+				<div class="col-2">
+					<h2 style="color:white">BaristaVille</h1>
 				</div>
-				<a href="#" class="col-2">Login</a>
+				<div class="col-1">
+					<a href="homePage.php" >
+						<h6 style="color:white">Home</h1>
+					</a>
+				</div>				
+				<div class="col-8"></div>
+				<div class="col-1">
+					<a href="loginPage.php" style="align-right">
+						<h6 style="color:white">Login</h1>
+					</a>
+				</div>				
 			</div>
 		</div>
+	</div>
+	<br>
+	<div class="container-fluid">
+		<h1>Home</h1>
+		<p>
+			<a href="loginPage.php">Login</a> or go home
+		</p>
 	</div>
 
 </body>
