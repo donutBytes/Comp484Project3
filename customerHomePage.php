@@ -57,7 +57,5 @@
 		</p>
 	</div>
 
-	<?php echo $_SESSION['role'];?>
-
 </body>
 </html>

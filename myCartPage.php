@@ -61,48 +61,114 @@
 					</thead>
 					<tbody>
 						<?php 
+							session_start();
 							require_once('db_connect.php');
 
-							$stmt = $db->prepare('SELECT * FROM products');
-							$stmt->execute();
-							$products = $stmt->fetchAll();
-							var_dump($_SESSION['cart']);
-							$items = $_SESSION['cart'];
+							// var_dump($_SESSION['cart']);
+							$totalCost = 0;
+							$totalSize = 0;
+							if(!isset($_SESSION['cart'])) {
+								// echo 'hi';	
+							} else if(sizeof($_SESSION['cart']) == 0) {
+								// echo 'this';
+							} else {
+								$stmt = $db->prepare('
+									SELECT * 
+									FROM products
+									WHERE product_id = ?
+									');
 
-							foreach($items as $item) {
-								$entry = '
-									<tr>
-										<td>'. $products[$item] .'</td>
-										<td>'. $pro[''] .'</td>
-										<td>'. $item['size'] .'</td>
-										<th scope="row">
-											<button class="btn btn-danger" id="'. $item['product_id'] .'">Add to Cart</button>
-										</th>
-									</tr>									
+								$items = $_SESSION['cart'];
+
+								$indexId = 1;
+ 								foreach($items as $id => $quantity) {
+									if($quantity > 1) {
+										$stmt->execute([$id]);
+										$product = $stmt->fetchAll();
+
+										for($i = 0; $i < $quantity; $i++) {
+											$entry = '
+												<tr id="'. $indexId .'">
+													<td>'. $product[0]['display_name'] .'</td>
+													<td>'. $product[0]['price'] .'</td>
+													<td>'. $quantity .'</td>
+													<th scope="row">
+														<button class="btn btn-danger" id="'. $product[0]['product_id'] .'">Remove from Cart</button>
+													</th>
+												</tr>									
+											';
+											echo $entry;
+											$indexId++;
+											$totalCost += $product[0]['price'];
+											$totalSize += $product[0]['size'];
+										}
+									}
+									else if($quantity == 1){	
+										$stmt->execute([$id]);
+										$product = $stmt->fetchAll();
+
+										$entry = '
+											<tr id="'.$indexId.'">
+												<td>'. $product[0]['display_name'] .'</td>
+												<td>'. $product[0]['price'] .'</td>
+												<td>'. $quantity .'</td>
+												<th scope="row">
+													<button class="btn btn-danger" id="'. $product[0]['product_id'] .'">Remove from Cart</button>
+												</th>
+											</tr>									
+										';
+										echo $entry;
+										$indexId++;
+										$totalCost += $product[0]['price'];
+										$totalSize += $product[0]['size'];					
+									}
+								}
+							}
+							echo '
+										</tbody>						
+									</table>			
+								</div>
+							';
+							if($totalCost > 0 && $totalSize > 0) {
+								echo '
+									<div class="row"><strong>Total Cost: </strong> $'.$totalCost.'</div>
+									<div class="row"><strong>Total Size: </strong> $'.$totalSize.'</div>
 								';
-								echo $entry;
+							}
+							echo '
+								<br>
+								<div class="row">
+							';	
+							if($totalCost > 0 && $totalSize > 0) {
+								echo '<button id="submit" class="btn btn-primary">Submit Order</button>';
 							}
 						?>
-					</tbody>						
-				</table>			
 		</div>
-
 	</div>
 
 	<script type="text/javascript">
 		$(document).ready(function() {
-			$('button').click(function() {
+			$("button").not('#submit').click(function() {
 				$.ajax({
 					type: "POST",
-					url: "updateSession.php",
-					data: { product_id: $(this).attr('id') },
-					dataType: "json",
+					url: "removeFromCart.php",
+					data: { product_id: this.id },
 					success: function(data){
-					     // var new = $.parseJSON(data);
-					     alert(data.response);
-					     // console.log('hi');
+						console.log('success');
 					},
 					error: function() {console.log('error');}
+				});
+		    	$("#" + $(this).attr('id')).closest('tr').remove();
+			});
+			$("#submit").click(function() {
+				$.ajax({
+					type: "POST",
+					url: "submitOrderController.php",
+					data: {},
+					success: function(data) {
+						console.log('success');
+						location.reload();
+					}
 				});
 			});
 		});	

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>My Cart</title>
+	<title>My Orders</title>
 
 		<script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
@@ -50,51 +50,92 @@
 	<br>
 	<div class="container">
 		<div class="row">
-				<table class="table">
-					<thead>
-						<tr>
-							<th>Product Name</th>
-							<th>Price</th>
-							<th>Size (oz)</th>
-							<th></th>
-						</tr>
-					</thead>
-					<tbody>
 						<?php 
+							session_start();	
 							require_once('db_connect.php');
-							require_once('updateSession.php');
 
 							$stmt = $db->prepare('
 								SELECT * 
 								FROM orders
-
+								LEFT JOIN products ON orders.product_id = products.product_id 
 								ORDER BY order_id DESC
 								');
 							$stmt->execute();
 							$products = $stmt->fetchAll();
-							var_dump($products);
 
-							var_dump($_SESSION['cart']);
-							$items = $_SESSION['cart'];
+							$indexId = $products[0]['order_id'];
+							echo '
+								<h1>Order '. $indexId .'</h1>
+								<table class="table">
+									<thead>
+										<tr>
+											<th>Product Name</th>
+											<th>Size (oz)</th>
+											<th>Quantity</th>
+											<th>Price</th>
+											<th></th>
+										</tr>
+									</thead>
+									<tbody>				
+							';
+		
+							foreach($products as $item) {
 
-							foreach($items as $item) {
-								$entry = '
-									<tr>
-										<td>'. $products[$item] .'</td>
-										<td>'. $pro[''] .'</td>
-										<td>'. $item['size'] .'</td>
-										<th scope="row">
-											<button class="btn btn-danger" id="'. $item['product_id'] .'">Add to Cart</button>
-										</th>
-									</tr>									
-								';
+								if($item['order_id'] != $indexId) {
+									$indexId--;
+									echo '
+											</tbody>
+										</table>
+										<h1>Order '. $indexId .'</h1>
+										<table class="table">
+											<thead>
+												<tr>
+													<th>Product Name</th>
+													<th>Size (oz)</th>
+													<th>Quantity</th>
+													<th>Price</th>
+													<th></th>
+												</tr>
+											</thead>
+											<tbody>				
+									';
+								}
+
+								if($item['completed'] == 0) {
+									$entry = '
+										<tr>
+											<td>'. $item['display_name'] .'</td>
+											<td>'. $item['size'] .'</td>
+											<td>'. $item['quantity'] .'</td>
+											<td>'. $item['price'] .'</td>
+											<th scope="row">
+												<span class="badge badge-default">Pending</span>
+											</th>
+										</tr>									
+										';
+								}
+								else if($item['completed'] == 1){
+									$entry = '
+										<tr>
+											<td>'. $item['display_name'] .'</td>
+											<td>'. $item['size'] .'</td>
+											<td>'. $item['quantity'] .'</td>
+											<td>'. $item['price'] .'</td>
+											<th scope="row">
+												<span class="badge badge-success">Completed</span>
+											</th>
+										</tr>									
+										';
+								}
 								echo $entry;
 							}
+							echo '
+									</tbody>
+								<table>
+							';
+							// var_dump($products);
 						?>
-					</tbody>						
-				</table>			
 		</div>
-
 	</div>
 
 	<script type="text/javascript">
@@ -103,7 +144,7 @@
 				$.ajax({
 					type: "POST",
 					url: "updateSession.php",
-					data: { product_id: $(this).attr('id') },
+					data: { product_id: this.id},
 					dataType: "json",
 					success: function(data){
 					     // var new = $.parseJSON(data);

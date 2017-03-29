@@ -73,7 +73,7 @@
 										<td>'. $item['quantity'] .'</td>
 										<td>'. $item['price'] .'</td>
 										<th scope="row">
-											<button class="btn btn-success" id="'. $item['product_id'] .'">Mark Complete</button>
+											<button class="btn btn-success" id="'. $item['order_id'] .'" name="'. $item['product_id'] .'">Mark Complete</button>
 										</th>
 									</tr>									
 								';
@@ -98,19 +98,19 @@
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$('button').click(function() {
-				$('#' + $(this).attr('id')).replaceWith('<span class="badge badge-success">Complete!</span>');
 				$.ajax({
 					type: "POST",
 					url: "updateOrder.php",
-					data: { product_id: $(this).attr('id') },
+					data: { product_id: this.name , order_id: this.id},
 					// dataType: "json",
 					success: function(data){
 					     // var new = $.parseJSON(data);
 					     // alert(data);
-					     // console.log('hi');
+					     console.log(data);
 					},
 					error: function() {console.log('error');}
 				});
+				$('#' + $(this).attr('id')).replaceWith('<span class="badge badge-success">Complete!</span>');
 			});
 		});	
 	</script>

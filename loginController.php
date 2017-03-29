@@ -1,5 +1,6 @@
 <?php 
 
+session_start();
 require_once('db_connect.php');
 
 $login = $db->prepare('
@@ -15,9 +16,9 @@ $results = $login->fetch();
 
 if(sizeof($results) > 0)
 {
-	var_dump($results);
+	// var_dump($results);
 	session_start();
-	$_SESSION['role'] = $results['role'];
+	$_SESSION['user_id'] = $results['user_id'];
 	header('Location: ' . $results['role'] . 'HomePage.php'); 
 	exit();
 }

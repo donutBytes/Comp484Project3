@@ -67,7 +67,7 @@
 							$stmt = $db->prepare('SELECT * FROM products');
 							$stmt->execute();
 							$items = $stmt->fetchAll();
-							var_dump($items[0]);
+							// var_dump($items[0]);
 
 							foreach($items as $item) {
 								$entry = '
@@ -94,13 +94,13 @@
 			$('button').click(function() {
 				$.ajax({
 					type: "POST",
-					url: "updateSession.php",
+					url: "updateCart.php",
 					data: { product_id: this.id },
 					// dataType: "json",
 					success: function(data){
 						console.log('success');
 					    // parsed = $.parseJSON(data);
-					    alert(data);
+					    // alert(data);
 					    // console.log('hi');
 					},
 					error: function() {console.log('error');}
